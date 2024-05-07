@@ -12,6 +12,17 @@ async function scan({
   contributorName = github.context.actor,
   ...config
 }: userway.OutputOptions) {
+  core.info(
+    JSON.stringify({
+      project,
+      commitHash,
+      branch,
+      target,
+      pullRequest,
+      contributorName,
+      ...config,
+    })
+  );
   return await userway.scan(
     {
       project,
@@ -73,7 +84,7 @@ async function run() {
 run()
   .then(({ score }) => {
     const message = `Quality gate outcome is ${score.outcome}`;
-    
+
     if (score.outcome === "FAILED") {
       core.setFailed(message);
     } else {
